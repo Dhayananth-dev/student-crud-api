@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.student.Entity.Student;
 import com.student.Repository.StudentRepo;
+import com.student.dto.StudentRequest;
+import com.student.dto.StudentUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,8 +16,12 @@ import lombok.RequiredArgsConstructor;
 public class StService {
     private final StudentRepo repo;
 	
-	public Map<String,Object> create(Student s) {
-		Student st=repo.save(s);
+	public Map<String,Object> create(StudentRequest request) {
+		Student student = new Student();
+		student.setName(request.getName());
+		student.setCourse(request.getCourse());
+		student.setEmail(request.getEmail());
+		Student st=repo.save(student);
 		return Map.of("Student Details Are Added",st);
 	}
 
@@ -24,7 +30,7 @@ public class StService {
 		return Map.of("Students Detail",st);
 	}
 
-	public Map<String, Object> findByid(Long id,Student student) {
+	public Map<String, Object> findByid(Long id,StudentUpdateRequest student) {
 		Student st=repo.findById(id).orElseThrow(()->new RuntimeException("Student ID not Found"));
 		if (student.getName()!=null) {
 			st.setName(student.getName());

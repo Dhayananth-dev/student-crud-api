@@ -1,5 +1,7 @@
 package com.student.Controller;
 
+import jakarta.validation.Valid;
+
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -13,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.student.Entity.Student;
 import com.student.Service.StService;
+import com.student.dto.StudentRequest;
+import com.student.dto.StudentUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 @RestController
@@ -25,8 +28,8 @@ public class StController {
 	private final StService service ;
 	@PostMapping("/create")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Map<String, Object> create(@RequestBody Student s) {
-		return service.create(s); 
+	public Map<String, Object> create(@Valid @RequestBody StudentRequest request) {
+		return service.create(request); 
 	}
 	@GetMapping("/view")
 	@ResponseStatus(HttpStatus.OK)
@@ -35,8 +38,8 @@ public class StController {
 	}
 	@PatchMapping("/modify/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Map<String,Object>change(@PathVariable Long id,@RequestBody Student student){
-		return service.findByid(id,student);
+	public Map<String,Object>change(@PathVariable Long id,@Valid @RequestBody StudentUpdateRequest request){
+		return service.findByid(id,request);
 	}
 	@DeleteMapping("/remove/{id}")
 	@ResponseStatus(HttpStatus.OK)
